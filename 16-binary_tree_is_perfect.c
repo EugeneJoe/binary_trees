@@ -1,49 +1,21 @@
 #include "binary_trees.h"
 
 /**
- * max - return the max value between 2 integers
- * @a: first integer
- * @b: second integer
- *
- * Return: larger value
- */
-size_t max(size_t a, size_t b)
-{
-	if (a >= b)
-		return (a);
-	else
-		return (b);
-}
-
-/**
- * binary_tree_depth - finds depth of binary tree
- * @tree: tree whose depth is to be measured
+ * dpth - finds depth of binary tree
+ * @node: tree whose depth is to be measured
  * Return: binary tree depth
  */
 int dpth(const binary_tree_t *node)
 {
 	int d = 0;
 
-	while (node != NULL) {
+	while (node != NULL)
+	{
 		d++;
 		node = node->left;
 	}
 
 	return (d);
-}
-
-/**
- * count_no_of_nodes - count number of nodes in a binary tree
- * @root: pointer to root node of tree
- *
- * Return: no. of nodes
- */
-int count_no_of_nodes(const binary_tree_t *root)
-{
-	if (root == NULL)
-		return (0);
-
-	return (1 + count_no_of_nodes(root->left) + count_no_of_nodes(root->right));
 }
 
 /**
