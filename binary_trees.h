@@ -2,6 +2,9 @@
 #define _BINARY_TREES_H_
 
 #include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 /**
  * struct binary_tree_s - Binary tree node
@@ -11,20 +14,16 @@
  * @left: Pointer to the left child node
  * @right: Pointer to the right child node
  */
-struct binary_tree_s
+typedef struct binary_tree_s
 {
-	int n;
-	struct binary_tree_s *parent;
-	struct binary_tree_s *left;
-	struct binary_tree_s *right;
-};
-
-typedef struct binary_tree_s binary_tree_t;
-typedef struct binary_tree_s bst_t;
-typedef struct binary_tree_s avl_t;
-typedef struct binary_tree_s heap_t;
+  int n;
+  struct binary_tree_s *parent;
+  struct binary_tree_s *left;
+  struct binary_tree_s *right;
+} binary_tree_t;
 
 void binary_tree_print(const binary_tree_t *);
+size_t depth(const binary_tree_t *tree);
 binary_tree_t *binary_tree_node(binary_tree_t *parent, int value);
 binary_tree_t *binary_tree_insert_left(binary_tree_t *parent, int value);
 binary_tree_t *binary_tree_insert_right(binary_tree_t *parent, int value);
@@ -37,6 +36,7 @@ void binary_tree_postorder(const binary_tree_t *tree, void (*func)(int));
 size_t binary_tree_height(const binary_tree_t *tree);
 size_t binary_tree_depth(const binary_tree_t *tree);
 size_t binary_tree_size(const binary_tree_t *tree);
+size_t height(const binary_tree_t *tree, size_t H);
 size_t binary_tree_leaves(const binary_tree_t *tree);
 size_t binary_tree_nodes(const binary_tree_t *tree);
 int binary_tree_balance(const binary_tree_t *tree);
@@ -44,6 +44,7 @@ int binary_tree_is_full(const binary_tree_t *tree);
 int binary_tree_is_perfect(const binary_tree_t *tree);
 binary_tree_t *binary_tree_sibling(binary_tree_t *node);
 binary_tree_t *binary_tree_uncle(binary_tree_t *node);
+<<<<<<< HEAD
 binary_tree_t *binary_tree_rotate_left(binary_tree_t *tree);
 binary_tree_t *binary_tree_rotate_right(binary_tree_t *tree);
 int binary_tree_is_bst(const binary_tree_t *tree);
@@ -51,5 +52,11 @@ bst_t *bst_insert(bst_t **tree, int value);
 bst_t *array_to_bst(int *array, size_t size);
 bst_t *bst_search(const bst_t *tree, int value);
 bst_t *bst_remove(bst_t *root, int value);
+=======
+int height_max(const binary_tree_t *tree);
+binary_tree_t *binary_trees_ancestor(const binary_tree_t *first, const binary_tree_t *second);
+int max(int a, int b);
+binary_tree_t *sibling(binary_tree_t *node);
+>>>>>>> b324dc764c6b8bc69eaeddf8b6882a818424cc9f
 
 #endif /* _BINARY_TREES_H_ */
