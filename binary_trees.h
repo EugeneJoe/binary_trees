@@ -67,7 +67,7 @@ bst_t *bst_remove(bst_t *root, int value);
 int height_max(const binary_tree_t *tree);
 binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
 				     const binary_tree_t *second);
-int max(int a, int b);
+size_t max(size_t a, size_t b);
 binary_tree_t *sibling(binary_tree_t *node);
 
 #endif /* _BINARY_TREES_H_ */
