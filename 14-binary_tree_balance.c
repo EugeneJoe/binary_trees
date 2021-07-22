@@ -9,10 +9,10 @@
  */
 size_t max(size_t a, size_t b)
 {
-        if (a >= b)
-                return (a);
-        else
-                return (b);
+	if (a >= b)
+		return (a);
+	else
+		return (b);
 }
 
 /**
@@ -25,15 +25,14 @@ size_t binary_tree_height(const binary_tree_t *tree)
 {
 	size_t Rh, Lh;
 
-        if (tree == NULL)
-                return (0);
-        else
-        {
-                Lh = binary_tree_height(tree->left);
-                Rh = binary_tree_height(tree->right);
-                return (max(Lh, Rh) + 1);
-	}
+	if (tree == NULL)
+		return (0);
+
+	Lh = binary_tree_height(tree->left);
+	Rh = binary_tree_height(tree->right);
+	return (max(Lh, Rh) + 1);
 }
+
 /**
  * binary_tree_balance - measures the balance factor of a binary tree
  * @tree: pointer to the root node of the tree to measure the balance factor
