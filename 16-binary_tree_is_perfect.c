@@ -1,50 +1,48 @@
 #include "binary_trees.h"
 
 /**
- * max - return the max value between 2 integers
- * @a: first integer
- * @b: second integer
- *
- * Return: larger value
+ * dpth - finds depth of binary tree
+ * @node: tree whose depth is to be measured
+ * Return: binary tree depth
  */
-size_t max(size_t a, size_t b)
+int dpth(const binary_tree_t *node)
 {
-	if (a >= b)
-		return (a);
-	else
-		return (b);
+	int d = 0;
+
+	while (node != NULL)
+	{
+		d++;
+		node = node->left;
+	}
+
+	return (d);
 }
 
 /**
- * binary_tree_height - measures the height of a binary tree
- * @tree: pointer to the root node of the tree to measure the height
- *
- * Return: height of tree or 0 if tree is NULL
- */
-size_t binary_tree_height(const binary_tree_t *tree)
-{
-	size_t Lh, Rh;
-
-	if (tree == NULL)
-		return (0);
-
-	Lh = binary_tree_height(tree->left);
-	Rh = binary_tree_height(tree->right);
-	return (max(Lh, Rh) + 1);
-}
-
-/**
- * count_no_of_nodes - count number of nodes in a binary tree
+ * is_perfect - determine whether a binary tree is a perfect tree
  * @root: pointer to root node of tree
+ * @d: depth of root
+ * @level: height of root
  *
- * Return: no. of nodes
+ * Return: 1 if tree is a perfect tree, else 0
  */
-int count_no_of_nodes(const binary_tree_t *root)
+int is_perfect(const binary_tree_t *root, int d, int level)
 {
 	if (root == NULL)
 		return (0);
 
-	return (1 + count_no_of_nodes(root->left) + count_no_of_nodes(root->right));
+	if (root->left == NULL && root->right == NULL)
+	{
+		if (d == level + 1)
+			return (1);
+		return (0);
+	}
+
+	if (root->left == NULL || root->right == NULL)
+		return (0);
+
+	return (is_perfect(root->left, d, level + 1) &&
+		is_perfect(root->right, d, level + 1));
 }
 
 /**
@@ -55,18 +53,7 @@ int count_no_of_nodes(const binary_tree_t *root)
  */
 int binary_tree_is_perfect(const binary_tree_t *root)
 {
-	int h, total_no_of_nodes, hh = 1;
+	int d = dpth(root);
 
-	h = binary_tree_height(root);
-	total_no_of_nodes = count_no_of_nodes(root);
-	hh = 1;
-	while (h != 0)
-	{
-		hh *= 2;
-		--h;
-	}
-	if (total_no_of_nodes == (hh - 1))
-		return (1);
-	else
-		return (0);
+	return (is_perfect(root, d, 0));
 }
