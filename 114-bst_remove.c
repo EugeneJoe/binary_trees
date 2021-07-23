@@ -40,6 +40,46 @@ bst_t *bst_search(const bst_t *tree, int value)
 	return (curr);
 }
 
+/**
+ * bst_delete - Deletes a node from a BST
+ * @root: root node pointer
+ * @node: node to delete from BST
+ *
+ * Return: pointer to new root node
+ */
+bst_t *bst_delete(bst_t *root, bst_t *node)
+{
+	bst_t *parent = node->parent, *succ = NULL;
+
+	/* No children or right-child only */
+	if (node->left == NULL)
+	{
+		if (parent != NULL && parent->left == node)
+			parent->left = node->right;
+		else if (parent != NULL)
+			parent->right = node->right;
+		if (node->right != NULL)
+			node->right->parent = parent;
+		free(node);
+		return (parent == NULL ? node->right : root);
+	}
+	/* Left child only */
+	if (node->right == NULL)
+	{
+		if (parent != NULL && parent->left == node)
+			parent->left = node->left;
+		else if (parent != NULL)
+			parent->right = node->left;
+		if (node->left != NULL)
+			node->left->parent = parent;
+		free(node);
+		return (parent == NULL ? node->left : root);
+	}
+	succ = min_node(node->right);
+	node->n = succ->n;
+
+	return (bst_delete(root, succ));
+}
 
 /**
  * bst_remove - removes a node from a Binary Search Tree
@@ -50,7 +90,7 @@ bst_t *bst_search(const bst_t *tree, int value)
  */
 bst_t *bst_remove(bst_t *root, int value)
 {
-	bst_t *parent = NULL, *curr = NULL, *succ = NULL;
+	bst_t *curr = NULL;
 
 	if (root == NULL)
 		return (root);
@@ -59,45 +99,5 @@ bst_t *bst_remove(bst_t *root, int value)
 	if (curr == NULL)
 		return (root);
 
-	parent = curr->parent;
-	if (curr->left == NULL && curr->right != NULL)
-	{
-		if (curr != root)
-		{
-			if (parent->left == curr)
-				parent->left = NULL;
-			else
-				parent->right = NULL;
-		}
-		else
-			root = NULL;
-		free(curr);
-	}
-	else if (curr->left != NULL && curr->right != NULL)
-	{
-		succ = min_node(curr->right);
-		curr->n = succ->n;
-		bst_remove(curr->right, succ->n);
-	}
-	else
-	{
-		if (curr->left != NULL)
-			succ = curr->left;
-		else
-			succ = curr->right;
-
-		if (curr != root)
-		{
-			if (curr == parent->left)
-				parent->left = succ;
-			else
-				parent->right = succ;
-		}
-		else
-		{
-			root = succ;
-		}
-		free(curr);
-	}
-	return (root);
+	return (bst_delete(root, curr));
 }
