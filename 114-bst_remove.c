@@ -18,6 +18,30 @@ bst_t *min_node(bst_t *node)
 }
 
 /**
+ * bst_search - insert a value in a Binary Search Tree
+ * @tree: double pointer to the root node of the BST to search the value in
+ * @value: value to store in the node to be inserted
+ *
+ * Return: a pointer to the node or NULL on failure
+ */
+bst_t *bst_search(const bst_t *tree, int value)
+{
+	bst_t *curr = (bst_t *)tree;
+
+	while (curr != NULL)
+	{
+		if (value < curr->n)
+			curr = curr->left;
+		else if (value > curr->n)
+			curr = curr->right;
+		else if (value == curr->n)
+			break;
+	}
+	return (curr);
+}
+
+
+/**
  * bst_remove - removes a node from a Binary Search Tree
  * @root: pointer to the root node of the tree where you will remove a node
  * @value: value to remove in the tree
@@ -26,36 +50,54 @@ bst_t *min_node(bst_t *node)
  */
 bst_t *bst_remove(bst_t *root, int value)
 {
-	bst_t *temp = NULL;
+	bst_t *parent = NULL, *curr = NULL, *succ = NULL;
 
 	if (root == NULL)
 		return (root);
 
-	if (value < root->n)
+	curr = bst_search(root, value);
+	if (curr == NULL)
+		return (root);
+
+	parent = curr->parent;
+	if (curr->left == NULL && curr->right != NULL)
 	{
-		root->left = bst_remove(root->left, value);
+		if (curr != root)
+		{
+			if (parent->left == curr)
+				parent->left = NULL;
+			else
+				parent->right = NULL;
+		}
+		else
+			root = NULL;
+		free(curr);
 	}
-	else if (value > root->n)
+	else if (curr->left != NULL && curr->right != NULL)
 	{
-		root->right = bst_remove(root->right, value);
+		succ = min_node(curr->right);
+		curr->n = succ->n;
+		bst_remove(curr->right, succ->n);
 	}
 	else
 	{
-		if (root->left == NULL)
+		if (curr->left != NULL)
+			succ = curr->left;
+		else
+			succ = curr->right;
+
+		if (curr != root)
 		{
-			temp = root->right;
-			free(root);
-			return (temp);
+			if (curr == parent->left)
+				parent->left = succ;
+			else
+				parent->right = succ;
 		}
-		else if (root->right == NULL)
+		else
 		{
-			temp = root->left;
-			free(root);
-			return (temp);
+			root = succ;
 		}
-		temp = min_node(root->right);
-		root->n = temp->n;
-		root->right = bst_remove(root->right, temp->n);
+		free(curr);
 	}
 	return (root);
 }
